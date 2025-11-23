@@ -1,0 +1,2 @@
+HumanMessage(content="I want to know about World War 2.")
+AIMessage(content="What do you want to know in specific about World War 2.")

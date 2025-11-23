@@ -1,0 +1,41 @@
+1. Create .env file and add OpenAI API key
+2. Add requirements.txt (streamlit will be needed)
+3. Write 1st script "prompt_streamlit_ui1.py" to create dynamic prompts(using placeholders) via PromptTemplate class and streamlit ui.
+    # command to run the streamlit code -- streamlit run prompt_streamlit_ui1.py
+4. To utilize resusability of PromptTemplate class' objects, create a script "prompt_generator.py" which will save our prompt template as a json file.
+5. Create another replica script of "prompt_streamlit_ui1.py" with name "prompt_streamlit_ui2.py" with just one change where we call prompt_template.json file instead of manually defining it. Test this code. 
+6. Now add the chain concept:
+    a. Another replica script "prompt_streamlit_ui3.py"
+    b. Since there are two invoke() methods being used, both can be repalced with single chain.invoke() hence update the script.
+    c. Run and test the code.
+7. Now, create a script chatbot1.py the infinite for loop and chat history
+8. Create a script "messages.py" to demonstrate usage of three propmt message types, i.e., SystemMessage, HumanMessage and AIMessage.
+    # These message types add tag to each message like which one is from system, human or AI in the chat history.
+9. Now create another script chatbot2_with_msgs.py to update first chatbot script and add feature of messages there so that one can identify which message is from whom.
+10. Now Create a script "chat_prompt_template.py" which would use ChatPromptTemplate class to facilitate dynamic messaging/template when dealing with list of messages/chat_history.
+11. Create two another scripts "message_placeholder.py" and "message_placeholder2.py" demonstrating chat_history inclusion in chat template using MessagePlaceholder class.
+○ General flow -- 
+    § First make a template using PromptTemplate or ChatPromptTemplate class 
+        □ Both are used for dynamic messaging but they are different
+        □ PromptTemplate is just one big block of text with fill-in-the-blank spots. We just hand over the AI a piece of paper with text on it. Here the structure is "String In ---> String Out"
+            from langchain_core.prompts import PromptTemplate
+            
+            # It's just a string with a variable
+            prompt = PromptTemplate.from_template("Tell me a joke about {topic}.")
+            
+            # Output: "Tell me a joke about cats."
+            print(prompt.invoke({"topic": "cats"}))
+        □  ChatPromptTemplate is not just text, it has roles. Modern models (like GPT-4, Claude, Llama-3-Instruct) are trained to distinguish between System, User and AI so we are handing over the AI a script where it knows exactly who said what. ChatPromptTemplate organizes this input into the specific buckets of System, user and AI. Here the structure is "Message List in ---> Message List out "
+            from langchain_core.prompts import ChatPromptTemplate
+            
+            # It separates instructions from user input
+            chat_prompt = ChatPromptTemplate.from_messages([
+                ("system", "You are a sarcastic comedian."), # The Behavior
+                ("user", "Tell me a joke about {topic}."),   # The Input
+            ])
+            
+            print(chat_prompt.invoke({"topic": "cats"}))
+            
+    § Make a prompt by invoking template (i.e., template.invoke())
+        □ This invoke here will have dictionary containing dynamic inputs to template
+    § Pass this prompt to model.invoke() as model expects prompts to reply on them.

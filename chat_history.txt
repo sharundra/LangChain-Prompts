@@ -1,0 +1,2 @@
+HumanMessage(content="I want to know the status of my order #12345.")
+AIMessage(content="Your order for order #12345 has been processed. It will reach to you in next 1-2 business days.")
